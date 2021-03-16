@@ -1,6 +1,5 @@
 .calendar {
     position: relative;
-    background-color: var(--grey-300);
 }
 
 ol,
@@ -13,6 +12,7 @@ li {
 header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: var(--white);
 }
 
@@ -21,31 +21,32 @@ header {
     font-weight: 600;
 }
 
-.days-of-week {
-    color: var(--gray-light);
-    font-size: 1.1rem;
-    background-color: var(--white);
-    padding: 10px 0 5px 0;
-}
-
 .days-of-week,
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
 }
 
-.days > .day::before {
-    content: "";
-    padding-bottom: 100%;
-    display: block;
+.days-of-week {
+    color: var(--gray-light);
+    font-size: 1.1rem;
+    background-color: var(--white);
+
+    .no-border & {
+        border-bottom: var(--day-border-width) solid var(--grey-300);
+    }
 }
 
 .days {
     height: 100%;
     position: relative;
-    grid-column-gap: var(--grid-gap);
-    grid-row-gap: var(--grid-gap);
-    border: solid 1px var(--grey-200);
+    background-color: var(--grey-300);
+
+    :not(.no-border) & {
+        grid-column-gap: var(--grid-gap);
+        grid-row-gap: var(--grid-gap);
+        border: solid 1px var(--grey-200);
+    }
 }
 
 li {
@@ -57,12 +58,24 @@ li {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 800;
     background-color: var(--white);
     color: var(--gray-dark);
-    padding: 5px;
+
+    &::before {
+        content: "";
+        padding-bottom: 100%;
+        display: block;
+    }
+
+    &:not(.day--disabled) {
+        &:hover {
+            cursor: pointer;
+            background-color: var(--green-variant);
+            color: var(--gray-dark);
+        }
+    }
 
     &.day--disabled {
         font-weight: 400;
@@ -76,9 +89,9 @@ li {
         span:after {
             content: '';
             position: absolute;
-            left: calc(50% - 25%);
+            left: calc(50% - 100);
             top: 50%;
-            width: 50%;
+            width: 75%;
             height: 2px;
             background: var(--gray-lighter);
             transform: rotate(-45deg);
@@ -89,6 +102,10 @@ li {
         border-top: var(--day-border-width) solid var(--green);
         border-bottom: var(--day-border-width) solid var(--green);
         background-color: var(--green-off);
+
+        &:hover {
+            background-color: var(--green-variant);
+        }
 
         &-start{
             border-left: var(--day-border-width) solid var(--green);
@@ -106,14 +123,14 @@ li {
         width: var(--day-label-size);
         height: var(--day-label-size);
     }
-}
 
-.day--today {
-    padding-top: 4px;
-
-    span {
-        color: var(--white);
-        border-radius: 100%;
-        background-color: var(--green);
+    &.day--today {
+        span {
+            color: var(--white);
+            border-radius: 100%;
+            background-color: var(--green);
+        }
     }
 }
+
+

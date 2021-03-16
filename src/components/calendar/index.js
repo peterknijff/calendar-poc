@@ -6,7 +6,7 @@ class Calendar extends LitElement {
         //language=HTML
         return html`
             <link rel="stylesheet" href="dist/style.css">
-            <div class="calendar">
+            <div class="calendar no-border">
                 <header>
                     <!-- Current month and year -->
                     <div class="month">
