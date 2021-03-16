@@ -7,7 +7,7 @@ const weekStartsAt = 0;
 
 class Calendar extends LitElement {
     options = {
-        todayDate: today,
+        date: today,
         weekStartsAt: weekStartsAt,
     }
 
