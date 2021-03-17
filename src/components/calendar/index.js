@@ -8,6 +8,7 @@ class Calendar extends LitElement {
         return {
             month: {type: String},
             year: {type: Number},
+            datesBlocked: {type: Array},
         };
     }
 
@@ -15,6 +16,7 @@ class Calendar extends LitElement {
         super();
         this.month = getCurrentMonthNumber();
         this.year = getCurrentYear();
+        this.datesBlocked = [];
     }
 
     static getStyles = () => styles

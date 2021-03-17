@@ -59,11 +59,13 @@ export function getDaysInMonth(date = new Date()) {
 /**
  * @param {Date} month
  * @return number
+ * It returns the day number if today is in the same month as the month argument,
+ * otherwise it return 0 (which is not a date day)
  */
 export function getTodayInMonth(month) {
     const today = new Date();
 
-    if (today.getMonth() !== month.getMonth()) {
+    if (today.getMonth() !== month.getMonth() || today.getFullYear() !== month.getFullYear()) {
         return 0;
     }
 

@@ -9,10 +9,11 @@ import {
 
 /**
  * @param {Date} month
+ * @param {String[]} datesBlocked
  * @return TemplateResult
  */
-export default (month) => {
-    const today = getTodayInMonth(month);
+export default (month, datesBlocked) => {
+    const todayDayNumber = getTodayInMonth(month);
     const firstDaysOfMonth = getFirstDayOfMonth(month);
     const daysInMonth = getDaysInMonth(month);
     const lastDaysOfMonth = getAmountOfDaysLeftInCalendar(firstDaysOfMonth.length + daysInMonth.length);
@@ -21,7 +22,11 @@ export default (month) => {
         ${firstDaysOfMonth.map(() => html`<li></li>`)}
         
         ${daysInMonth.map((day) => {
-            const classes = determineDayState(day, { today: today });
+            const classes = determineDayState(day, month,{
+                today: todayDayNumber,
+                datesBlocked: datesBlocked
+            });
+            
             return html`
                 <li class="day ${classes.join(',')}">
                     <span>${day}</span>
@@ -35,14 +40,22 @@ export default (month) => {
 
 /**
  * @param {number} day
- * @param {{today: number}} options
+ * @param {Date} month
+ * @param {{today: number, blockedDates: string[]}} options
  * @return String[]
  */
-function determineDayState(day, { today }) {
+function determineDayState(day, month, {today, datesBlocked}) {
+    const baseDate = new Date();
+    baseDate.setDate(day);
+
     const classes = [];
 
     if (isDayToday(day, today)) {
         classes.push('day--today');
+    }
+
+    if (datesBlocked.includes(baseDate.toLocaleDateString())) {
+        classes.push('day--blocked');
     }
 
     return classes;

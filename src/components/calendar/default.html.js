@@ -3,11 +3,16 @@ import renderDays from './days.html.js'
 import { getWeekDays } from "../../utils/dates";
 
 /**
- * @param {{month: number, year: number}} options
+ * @param {{
+ * month: number,
+ * year: number,
+ * datesBlocked: String[],
+ * }} options
  * @return TemplateResult
  */
 export default (options) => {
     const month = new Date(options.year, options.month - 1);
+
     return html`
         <link rel="stylesheet" href="dist/style.css">
         <div class="calendar">
@@ -27,7 +32,7 @@ export default (options) => {
             </ol>
 
             <ol class="days">
-                ${ renderDays(month) }
+                ${ renderDays(month, options.datesBlocked) }
             </ol>
         </div>`
 };
