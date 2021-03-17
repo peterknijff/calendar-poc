@@ -29,7 +29,7 @@ export default (month, datesBlocked) => {
             return html`<nh-calendar-day
                     .dayNumber="${day}"
                     .isToday="${isDayToday(day, today)}"
-                    .isBlocked="${datesBlocked.includes(dayDate.toLocaleDateString())}"
+                    .isBlocked="${datesBlocked.includes(dayDate.toLocaleDateString('en'))}"
                 ></nh-calendar-day>`;
         })}
         
