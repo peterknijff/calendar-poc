@@ -1,17 +1,23 @@
-import { LitElement } from 'lit-element';
+import {LitElement} from 'lit-element';
 import template from './default.html.js';
 import styles from "./styles.pcss";
-
-const today = new Date();
-const weekStartsAt = 0;
+import {getCurrentMonthNumber, getCurrentYear} from "../../utils/dates";
 
 class Calendar extends LitElement {
-    options = {
-        date: today,
-        weekStartsAt: weekStartsAt,
+    static get properties() {
+        return {
+            month: {type: String},
+            year: {type: Number},
+        };
     }
 
-    getStyles = () => styles
+    constructor() {
+        super();
+        this.month = getCurrentMonthNumber();
+        this.year = getCurrentYear();
+    }
+
+    static getStyles = () => styles
 
     render() {
         return template(this);
