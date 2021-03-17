@@ -19,7 +19,7 @@ class Calendar extends LitElement {
         this.datesBlocked = [];
     }
 
-    static getStyles = () => styles
+    static getStyles = () => styles;
 
     render() {
         return template(this);

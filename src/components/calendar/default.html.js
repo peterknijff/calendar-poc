@@ -26,7 +26,6 @@ export default (options) => {
                 </div>
             </header>
 
-            <!-- Days of week -->
             <ol class="week-days">
                 ${ getWeekDays().map((day) => html`<li>${day}</li>`) }
             </ol>

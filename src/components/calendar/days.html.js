@@ -1,4 +1,5 @@
 import {html} from "lit-element";
+import './day/index.js';
 import {
     getAmountOfDaysLeftInCalendar,
     getFirstDayOfMonth,
@@ -13,7 +14,7 @@ import {
  * @return TemplateResult
  */
 export default (month, datesBlocked) => {
-    const todayDayNumber = getTodayInMonth(month);
+    const today = getTodayInMonth(month);
     const firstDaysOfMonth = getFirstDayOfMonth(month);
     const daysInMonth = getDaysInMonth(month);
     const lastDaysOfMonth = getAmountOfDaysLeftInCalendar(firstDaysOfMonth.length + daysInMonth.length);
@@ -22,41 +23,16 @@ export default (month, datesBlocked) => {
         ${firstDaysOfMonth.map(() => html`<li></li>`)}
         
         ${daysInMonth.map((day) => {
-            const classes = determineDayState(day, month,{
-                today: todayDayNumber,
-                datesBlocked: datesBlocked
-            });
+            const dayDate = new Date();
+            dayDate.setDate(day);
             
-            return html`
-                <li class="day ${classes.join(',')}">
-                    <span>${day}</span>
-                </li>
-            `;
+            return html`<nh-calendar-day
+                    .dayNumber="${day}"
+                    .isToday="${isDayToday(day, today)}"
+                    .isBlocked="${datesBlocked.includes(dayDate.toLocaleDateString())}"
+                ></nh-calendar-day>`;
         })}
         
         ${lastDaysOfMonth.map(() => html`<li></li>`)}
     `
-}
-
-/**
- * @param {number} day
- * @param {Date} month
- * @param {{today: number, blockedDates: string[]}} options
- * @return String[]
- */
-function determineDayState(day, month, {today, datesBlocked}) {
-    const baseDate = new Date();
-    baseDate.setDate(day);
-
-    const classes = [];
-
-    if (isDayToday(day, today)) {
-        classes.push('day--today');
-    }
-
-    if (datesBlocked.includes(baseDate.toLocaleDateString())) {
-        classes.push('day--blocked');
-    }
-
-    return classes;
 }
