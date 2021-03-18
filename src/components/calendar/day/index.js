@@ -22,7 +22,15 @@ class CalendarDay extends LitElement {
     static getStyles = () => styles;
 
     handleClick() {
-        alert('clicked');
+        if (!this.isBlocked) {
+            prompt(`Select how many dates from ${this.isToday ? 'today' : 'day'}?`, 3);
+        }
+
+        if (this.isBlocked) {
+            const deleteDay = confirm('Blocked date, do you want to delete it?');
+            
+            this.isBlocked =  !deleteDay;
+        }
     }
 
     render() {
