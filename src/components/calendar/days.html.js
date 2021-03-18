@@ -30,6 +30,7 @@ export default (month, datesBlocked) => {
                     .dayNumber="${day}"
                     .isToday="${isDayToday(day, today)}"
                     .isBlocked="${datesBlocked.includes(dayDate.toLocaleDateString('en'))}"
+                    data-value="${day}"
                 ></nh-calendar-day>`;
         })}
         

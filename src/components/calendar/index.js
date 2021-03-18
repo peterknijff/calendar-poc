@@ -17,7 +17,9 @@ class Calendar extends LitElement {
         this.month = getCurrentMonthNumber();
         this.year = getCurrentYear();
         this.datesBlocked = [];
-        this.addEventListener('select-days', (e) => this._selectDates(e.detail));
+        this.selectedDays = [];
+        this.addEventListener('select-days', (e) => this._selectDays(e.detail));
+        this.addEventListener('deselect-days', (e) => this._deselectDays(e.detail));
     }
 
     static getStyles = () => styles;
@@ -30,9 +32,47 @@ class Calendar extends LitElement {
      * @param {{currentDate: number, selection: number}} options
      * @return void
      */
-    _selectDates(options) {
-        console.log(options);
-        console.log(options.currentDate, options.selection);
+    _selectDays(options) {
+        if (this.selectedDays.length) {
+            this._deselectDays();
+        }
+        const selector = [];
+        for (let i = 0; i < options.selection; i++) {
+            selector.push(`nh-calendar-day[data-value="${options.currentDate + i}"]`);
+        }
+        const elements =  this.shadowRoot.querySelectorAll(selector.join(','));
+
+        for (let i = 0; i < elements.length; i++) {
+            const element = elements[i];
+
+            if (!element.selected.active) {
+                const daySelected = {first: i === 0, last: i === elements.length - 1, active: true};
+                this.selectedDays[options.currentDate + i] = daySelected;
+                element.selected = daySelected;
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    _deselectDays() {
+        if (!this.selectedDays.length) {
+            return;
+        }
+
+        const selector = [];
+        for (let key in this.selectedDays) {
+            selector.push(`nh-calendar-day[data-value="${key}"]`);
+        }
+        const elements =  this.shadowRoot.querySelectorAll(selector.join(','));
+        for (let i = 0; i < elements.length; i++) {
+            const element = elements[i];
+            if (element.selected.active) {
+                element.selected = {first: false, last: false, active: false};
+            }
+        }
+        this.selectedDays = [];
     }
 }
 

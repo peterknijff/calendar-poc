@@ -12,6 +12,7 @@ li {
     background-color: var(--white);
     color: var(--gray-dark);
     height: 100%;
+    box-sizing: border-box;
 
     &::before {
         content: "";
@@ -57,11 +58,11 @@ li {
             background-color: var(--green-variant);
         }
 
-        &-start{
+        &-first{
             border-left: var(--day-border-width) solid var(--green);
         }
 
-        &-end{
+        &-last{
             border-right: var(--day-border-width) solid var(--green);
         }
     }

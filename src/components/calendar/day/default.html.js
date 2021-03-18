@@ -5,6 +5,7 @@ import {html} from "lit-element";
  * dayNumber: number,
  * isToday: boolean,
  * isBlocked: boolean,
+ * selected: {first: boolean, last: boolean, active: boolean}
  * }} options
  * @return TemplateResult
  */
@@ -19,9 +20,10 @@ export default (options) => {
 /**
  * @param {boolean} isToday
  * @param {boolean} isBlocked
+ * @param {{first: boolean, last: boolean, active: boolean}} selected
  * @return String[]
  */
-function determineDayState({isToday, isBlocked}) {
+function determineDayState({isToday, isBlocked, selected}) {
     const classes = [];
 
     if (isToday) {
@@ -30,6 +32,20 @@ function determineDayState({isToday, isBlocked}) {
 
     if (isBlocked) {
         classes.push('day--blocked');
+    }
+
+    if (selected) {
+        if (selected.active) {
+            classes.push('day--selected');
+        }
+
+        if (selected.first) {
+            classes.push('day--selected-first');
+        }
+
+        if (selected.last) {
+            classes.push('day--selected-last');
+        }
     }
 
     return classes;
