@@ -12,7 +12,7 @@ export default (options) => {
     const classes = determineDayState(options);
     return html`
         <link rel="stylesheet" href="dist/style.css">
-        <li class="day ${classes}"><span>${options.dayNumber}</span></li>
+        <li class="day ${classes.join(' ')}"><span>${options.dayNumber}</span></li>
     `;
 }
 
