@@ -26,8 +26,6 @@ export default (month, datesBlocked) => {
             const dayDate = new Date();
             dayDate.setDate(day);
             
-            console.log(datesBlocked, dayDate.toLocaleDateString('en'), datesBlocked.includes(dayDate.toLocaleDateString('en')));
-            
             return html`<nh-calendar-day
                     .dayNumber="${day}"
                     .isToday="${isDayToday(day, today)}"

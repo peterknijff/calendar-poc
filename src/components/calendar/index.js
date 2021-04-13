@@ -1,79 +1,67 @@
-import {LitElement} from 'lit-element';
-import template from './default.html.js';
-import styles from "./styles.pcss";
+import {html, LitElement} from "lit-element";
 import {getCurrentMonthNumber, getCurrentYear} from "../../utils/dates";
 
-class CalendarMonth extends LitElement {
+class CalendarComponent extends LitElement {
     static get properties() {
         return {
-            month: {type: String},
-            year: {type: Number},
-            datesBlocked: {type: Array},
+            start: {type: String},
+            end: {type: String}
         };
     }
 
     constructor() {
         super();
-        this.month = getCurrentMonthNumber();
-        this.year = getCurrentYear();
-        this.datesBlocked = [];
-        this.selectedDays = [];
-        this.addEventListener('select-days', (e) => this._selectDays(e.detail));
-        this.addEventListener('deselect-days', (e) => this._deselectDays(e.detail));
-    }
 
-    static getStyles = () => styles;
+        const currentYear = getCurrentYear();
+        const currentMonth = getCurrentMonthNumber();
+
+        this.start = `${currentYear}-${currentMonth}`;
+        this.end = `${currentYear + 2}-${currentMonth}`;
+    }
 
     render() {
-        return template(this);
+        const years = this.getYears();
+
+        return html`${years.map((year) => {
+            const months = JSON.stringify(this.getMonths(year));
+            return html`<calendar-year year="${year}" months="${months}"></calendar-year>`;
+        })}`;
     }
 
-    /**
-     * @param {{currentDate: number, selection: number}} options
-     * @return void
-     */
-    _selectDays(options) {
-        if (this.selectedDays.length) {
-            this._deselectDays();
-        }
-        const selector = [];
-        for (let i = 0; i < options.selection; i++) {
-            selector.push(`nh-calendar-day[data-value="${options.currentDate + i}"]`);
-        }
-        const elements =  this.shadowRoot.querySelectorAll(selector.join(','));
+    getYears() {
+        const years = [];
+        const startYear = Number(this.start.split('-')[0]);
+        const endYear = Number(this.end.split('-')[0]);
 
-        for (let i = 0; i < elements.length; i++) {
-            const element = elements[i];
-
-            if (!element.selected.active) {
-                const daySelected = {first: i === 0, last: i === elements.length - 1, active: true};
-                this.selectedDays[options.currentDate + i] = daySelected;
-                element.selected = daySelected;
-            }
+        for (let i = startYear; i <= endYear; i++) {
+            years.push(i);
         }
+
+        return years;
     }
 
-    /**
-     * @return void
-     */
-    _deselectDays() {
-        if (!this.selectedDays.length) {
-            return;
+    getMonths(year) {
+        const months = [];
+        const startYear = Number(this.start.split('-')[0]);
+        const endYear = Number(this.end.split('-')[0]);
+
+        let startMonth = 1;
+        let endMonth = 12;
+
+        if (year === startYear) {
+            startMonth = Number(this.start.split('-')[1]);
         }
 
-        const selector = [];
-        for (let key in this.selectedDays) {
-            selector.push(`nh-calendar-day[data-value="${key}"]`);
+        if (year === endYear) {
+            endMonth = Number(this.end.split('-')[1]);
         }
-        const elements =  this.shadowRoot.querySelectorAll(selector.join(','));
-        for (let i = 0; i < elements.length; i++) {
-            const element = elements[i];
-            if (element.selected.active) {
-                element.selected = {first: false, last: false, active: false};
-            }
+
+        for (let i = startMonth; i <= endMonth; i++) {
+            months.push(i);
         }
-        this.selectedDays = [];
+
+        return months;
     }
 }
 
-customElements.define('calendar-month', CalendarMonth);
+customElements.define('calendar-component', CalendarComponent);
