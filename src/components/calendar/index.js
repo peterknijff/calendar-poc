@@ -3,7 +3,7 @@ import template from './default.html.js';
 import styles from "./styles.pcss";
 import {getCurrentMonthNumber, getCurrentYear} from "../../utils/dates";
 
-class Calendar extends LitElement {
+class CalendarMonth extends LitElement {
     static get properties() {
         return {
             month: {type: String},
@@ -76,4 +76,4 @@ class Calendar extends LitElement {
     }
 }
 
-customElements.define('nh-calendar', Calendar);
+customElements.define('calendar-month', CalendarMonth);
